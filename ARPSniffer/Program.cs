@@ -77,8 +77,16 @@ namespace ARPsniffer
             var device = devices[val];
 
             device.OnPacketArrival += new PacketArrivalEventHandler(Device_OnPacketArrival);
-            device.Open(DeviceModes.Promiscuous, 1000);
-            device.Filter = "arp";
+            try
+            {
+                device.Open(DeviceModes.Promiscuous, 1000);
+                device.Filter = "arp";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n{0}", ex.Message);
+                return;
+            }
 
             Console.WriteLine();
             Console.WriteLine("Listening on {0}, hit 'Ctrl-C' to exit...", device.Description);
